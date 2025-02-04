@@ -31,7 +31,8 @@ jobs:
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
       - name: 🏗️ Construire l’image Docker
-        run: docker build -t mon-docker-user/devops-project1 .
+        run: docker build -t alialies/devops-project1 .
 
       - name: 📤 Pousser l’image sur Docker Hub
-        run: docker push mon-docker-user/devops-project1
+        run: docker push alialies/devops-project1
+ 
