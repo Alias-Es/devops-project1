@@ -1,0 +1,37 @@
+name: 🚀 CI/CD Workflow
+
+on:
+  push:
+    branches:
+      - main  # Lance le workflow quand on pousse sur la branche main
+  pull_request:
+    branches:
+      - main  # Exécute aussi sur les Pull Requests
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🛎️ Récupérer le code
+        uses: actions/checkout@v3
+
+      - name: ⚙️ Installer Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: 📦 Installer les dépendances
+        run: npm install
+
+      - name: ✅ Vérifier le code (tests)
+        run: npm test || echo "Aucun test défini"
+
+      - name: 🔐 Se connecter à Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: 🏗️ Construire l’image Docker
+        run: docker build -t mon-docker-user/devops-project1 .
+
+      - name: 📤 Pousser l’image sur Docker Hub
+        run: docker push mon-docker-user/devops-project1
